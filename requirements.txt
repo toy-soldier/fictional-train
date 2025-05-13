@@ -1,0 +1,14 @@
+py4j==0.10.9.7
+pyspark==3.4.4
+pytest
+
+
+### environment vars:
+# JAVA_HOME = C:\Program Files\jdk11
+# HADOOP_HOME = C:\studies\hadoop-3.3.5
+# SPARK_HOME = C:\studies\spark-3.4.4
+# PYSPARK_PYTHON = python
+# PYTHONPATH = C:\studies\spark-3.4.4\python;C:\studies\spark-3.4.4\python\lib\py4j-0.10.9.7-src.zip
+# Path = %Path%;C:\Program Files\jdk11\bin;C:\studies\hadoop-3.3.5\bin;C:\studies\spark-3.4.4\bin
+# pyspark and py4j versions have to match
+# my Python version is 3.9.6
