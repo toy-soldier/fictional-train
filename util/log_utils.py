@@ -34,7 +34,6 @@ class Log4j:
         """Invoke debug() on the wrapped logger."""
         self.logger.debug(message)
 
-    @staticmethod
     def setup_python_logger_instead(self, root_class: str, app_name: str) -> logging.Logger:
         """Setup a python logger."""
         logger = logging.getLogger(root_class + "." + app_name)

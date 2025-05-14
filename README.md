@@ -25,3 +25,9 @@ overview of HQ's operation:
 <img src="data/images/hq.jpg" width="200" height="150"/>
 
 HQ writes files to `data/output/hq`.
+
+Execute the unit tests:
+
+    pytest  --cov-config=tests/.coveragerc --cov-report html:tests/cov_html --cov=. tests/
+
+Coverage report will be in `tests/cov_html/index.html`
