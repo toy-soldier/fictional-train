@@ -1,5 +1,4 @@
 """This is the Retailer App's main module."""
-from pyspark.sql import functions as func
 from util import spark_utils as su
 
 
@@ -18,8 +17,9 @@ def main() -> None:
             customer_orders_df, columns_of_customers, columns_of_orders, columns_of_order_items)
         orders_of_same_customer_df = scm.form_orders_of_same_customer_df(
             order_items_of_same_order_df,columns_of_customers, columns_of_orders)
-        orders_of_same_customer_df.printSchema()
+
+        scm.write_df(orders_of_same_customer_df)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

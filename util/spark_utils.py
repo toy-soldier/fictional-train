@@ -95,3 +95,9 @@ class SparkContextManager:
             orderBy("customer_id")
         self.logger.info("Consolidation finished!")
         return orders_of_same_customer_df
+
+    def write_df(self, df: sql.DataFrame) -> None:
+        """Write the dataframe to the specified folder."""
+        self.logger.info("Now writing the dataframe to the output folder...")
+        df.write.parquet(constants.OUTPUT_FOLDER_PATH, "overwrite")
+        self.logger.info("Successfully wrote dataframe to PARQUET files!")

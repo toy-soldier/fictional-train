@@ -37,7 +37,7 @@ class Log4j:
     def setup_python_logger_instead(self, root_class: str, app_name: str) -> logging.Logger:
         """Setup a python logger."""
         logger = logging.getLogger(root_class + "." + app_name)
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.DEBUG)
 
         console_handler = logging.StreamHandler()
         file_handler = logging.FileHandler(
@@ -49,8 +49,8 @@ class Log4j:
         logger.addHandler(file_handler)
         formatter = logging.Formatter(
             "{asctime} - {levelname} - {message}",
-            style="{", # use str.format() to write the log's timestamp
-            datefmt="%Y-%m-%d %H:%M" # format of the log's timestamp
+            style="{",                  # use str.format() to write the log's timestamp
+            datefmt="%Y-%m-%d %H:%M"    # format of the log's timestamp
         )
 
         console_handler.setFormatter(formatter)
