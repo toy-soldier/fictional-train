@@ -1,0 +1,48 @@
+[
+  {
+    "customer_id": 100,
+    "customer_name": "Customer 1",
+    "orders": [
+      {
+        "order_customer_id": 100,
+        "order_id": 42008,
+        "order_items": [
+          {
+            "order_item_id": 95546,
+            "order_item_order_id": 42008
+          },
+          {
+            "order_item_id": 85546,
+            "order_item_order_id": 42008
+          }
+        ]
+      },
+      {
+        "order_customer_id": 100,
+        "order_id": 52008,
+        "order_items": [
+          {
+            "order_item_id": 85546,
+            "order_item_order_id": 52008
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "customer_id": 200,
+    "customer_name": "Customer 2",
+    "orders": [
+      {
+        "order_customer_id": 200,
+        "order_id": 742,
+        "order_items": [
+          {
+            "order_item_id": 116,
+            "order_item_order_id": 742
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -18,7 +18,8 @@ class SparkContextManager:
             sql.SparkSession
                 .builder
                 .appName(self.app_name)
-                .master("local[3]")
+                .master(constants.SPARK_MASTER)
+                .config("spark.sql.warehouse.dir", constants.SPARK_WAREHOUSE_DIR)
                 .enableHiveSupport()
                 .getOrCreate()
                  )
@@ -101,3 +102,10 @@ class SparkContextManager:
         self.logger.info("Now writing the dataframe to the output folder...")
         df.write.parquet(constants.OUTPUT_FOLDER_PATH, "overwrite")
         self.logger.info("Successfully wrote dataframe to PARQUET files!")
+
+    def read_received_files(self) -> sql.DataFrame:
+        """Read the files sent by the retailer into a dataframe."""
+        self.logger.info("Now reading received files into a dataframe...")
+        consolidated_df = self.spark.read.parquet(constants.OUTPUT_FOLDER_PATH)
+        self.logger.info("Successfully created dataframe from PARQUET files!")
+        return consolidated_df
