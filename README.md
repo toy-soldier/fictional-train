@@ -14,7 +14,7 @@ files.  These files will then be sent to HQ.
 The retailer has a PySpark application for its needs.  The following image presents an
 overview of the retailer's operation:
 
-<img src="data/images/retailer.jpg" width="400" height="200"/>
+<img src="data/images/retailer.jpg" width="500" height="200"/>
 
 The retailer simulates sending the files to HQ by writing files to `data/output/`.
 
@@ -25,9 +25,7 @@ saved to HQ's data warehouse.
 HQ has a PySpark application for its needs.  The following image presents an
 overview of HQ's operation:
 
-<img src="data/images/hq.jpg" width="400" height="200"/>
-
-HQ writes files to `data/output/hq`.
+<img src="data/images/hq.jpg" width="500" height="200"/>
 
 Execute the unit tests:
 

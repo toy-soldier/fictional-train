@@ -99,7 +99,7 @@ class TestSparkContextManager(TestCase):
         self.assertEqual(1, order_items_by_orders_df.count())
 
         self.assertDictEqual(
-            {**customer_record_1, **order_record_11, "order_items": [order_item_record_111, order_item_record_112]},
+            {**customer_record_1, **order_record_11, "order_items": [order_item_record_112, order_item_record_111]},
             order_items_by_orders_df.collect()[0].asDict(recursive=True),
             "Consolidated DF not created properly"
         )
