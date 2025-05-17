@@ -18,12 +18,14 @@ overview of the retailer's operation:
 
 The retailer simulates sending the files to HQ by writing files to `data/output/`.
 
-HQ consumes the files set by the retailer.
+HQ consumes the files sent by the retailer.  HQ will split the consolidated data 
+sent by the retailer, effectively re-normalizing the data.  The normalized data is then
+saved to HQ's data warehouse.
 
 HQ has a PySpark application for its needs.  The following image presents an
 overview of HQ's operation:
 
-<img src="data/images/hq.jpg" width="200" height="150"/>
+<img src="data/images/hq.jpg" width="400" height="200"/>
 
 HQ writes files to `data/output/hq`.
 

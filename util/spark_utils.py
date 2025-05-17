@@ -46,16 +46,20 @@ class SparkContextManager:
                         orders_df: sql.DataFrame, order_items_df: sql.DataFrame) -> sql.DataFrame:
         """Create the `customer_orders_df` by joining the 3 dataframes."""
         self.logger.info("Now joining the three dataframes into `customer_orders_df`...")
+
+        # not all customers have order_id in orders table
+        # not all orders have order_item_id in order_items table
+
         customer_orders_df = customers_df. \
             join(
                 orders_df,
                 customers_df["customer_id"] == orders_df["order_customer_id"],
-                how="inner"
+                how="left"
             ). \
             join(
                 order_items_df,
                 orders_df["order_id"] == order_items_df["order_item_order_id"],
-                how="inner"
+                how="left"
             )
         self.logger.info("Joined dataframes into `customer_orders_df`!")
         return customer_orders_df
@@ -109,3 +113,37 @@ class SparkContextManager:
         consolidated_df = self.spark.read.parquet(constants.OUTPUT_FOLDER_PATH)
         self.logger.info("Successfully created dataframe from PARQUET files!")
         return consolidated_df
+
+    def flatten_df(self, consolidated_df: sql.DataFrame,
+                   columns_of_customers: list[str],
+                   columns_of_orders: list[str],
+                   columns_of_order_items: list[str]) -> sql.DataFrame:
+        """Flatten the consolidated dataframe."""
+        self.logger.info("Now reading received files into a dataframe...")
+
+        # when the field containing consolidated records are exploded, e.g. the field `orders`
+        # we need to prefix the parent field when referencing the sub-fields, e.g. the sub-field `orders.order_id`
+        # thus we need to alias the sub-fields so we can refer to them without the prefix, e.g. the sub-field `order_id`
+        aliased_orders_columns = [func.col(f"orders.{name}").alias(name) for name in columns_of_orders]
+        aliased_order_items_columns = [func.col(f"order_items.{name}").alias(name) for name in columns_of_order_items]
+
+        flattened_df = consolidated_df. \
+            select(*columns_of_customers, func.explode("orders").alias("orders")). \
+            select(*columns_of_customers, *aliased_orders_columns, func.explode("orders.order_items").alias("order_items")). \
+            select(*columns_of_customers, *columns_of_orders, *aliased_order_items_columns). \
+            orderBy("customer_id", "order_id")
+
+        self.logger.info("Flattening finished!")
+        return flattened_df
+
+    def split_df_into_multiple_dfs(self, flattened_df: sql.DataFrame,
+                   columns_of_customers: list[str],
+                   columns_of_orders: list[str],
+                   columns_of_order_items: list[str]) -> tuple[sql.DataFrame, sql.DataFrame, sql.DataFrame]:
+        """Split the flat dataframe into customers_df, orders_df and order_items_df."""
+        self.logger.info("Now splitting the flattened dataframe into 3 dataframes...")
+        customers_df = flattened_df.select(*columns_of_customers).distinct()
+        orders_df = flattened_df.select(*columns_of_orders).distinct().dropna()
+        order_items_df = flattened_df.select(*columns_of_order_items).distinct().dropna()
+        self.logger.info("splitting finished!")
+        return customers_df, orders_df, order_items_df
