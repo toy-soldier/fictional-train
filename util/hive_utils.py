@@ -66,3 +66,35 @@ def create_order_items_table(spark: sql.SparkSession, name: str) -> None:
 def get_table_columns(spark: sql.SparkSession, name: str) -> list[str]:
     """Get the columns of the Hive table."""
     return spark.table(name).limit(0).columns
+
+
+def get_row_count(spark: sql.SparkSession, name: str) -> int:
+    """Get the count of records the Hive table."""
+    return spark.table(name).count()
+
+
+def insert_df_into_table(df: sql.DataFrame, name: str) -> None:
+    """Insert the dataframe into the target table."""
+    df.write.insertInto(name, overwrite=True)
+
+
+def merge_df_into_table(spark: sql.SparkSession, df: sql.DataFrame,
+                        name: str, columns: list[str], on: str) -> None:
+    """
+        Merge the dataframe into the target table.
+        Currently not supported but keeping it here.
+    """
+    temp_view_name = f"temp_view_{name}"
+    df.createTempView(temp_view_name)
+    update_clause = ", ".join([f"t.{field} = s.{field}" for field in columns if field != on])
+    query = f"""
+        MERGE INTO {name} t
+        USING {temp_view_name} s
+        ON t.{on} = s.{on}
+        WHEN MATCHED THEN
+          UPDATE SET {update_clause}
+        WHEN NOT MATCHED THEN
+          INSERT *
+    """
+    spark.sql(query)
+    spark.catalog.dropTempView(temp_view_name)
