@@ -13,5 +13,5 @@ def main() -> None:
         hu.create_order_items_table(scm.spark, constants.HIVE_TABLE_ORDER_ITEMS)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

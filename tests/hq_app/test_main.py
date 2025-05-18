@@ -1,3 +1,4 @@
+"""This module contains the unit test for main.py."""
 from unittest import TestCase, mock
 from hq_app import main
 

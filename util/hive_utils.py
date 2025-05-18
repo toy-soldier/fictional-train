@@ -4,7 +4,7 @@ from pyspark import sql
 
 def create_database(spark: sql.SparkSession, name: str) -> None:
     """Create Hive database."""
-    spark.sql(f"CREATE DATABASE {name};")
+    spark.sql(f"CREATE DATABASE IF NOT EXISTS {name};")
 
 
 def drop_database(spark: sql.SparkSession, name: str) -> None:
@@ -20,7 +20,7 @@ def use_database(spark: sql.SparkSession, name: str) -> None:
 def create_customers_table(spark: sql.SparkSession, name: str) -> None:
     """Create Hive table for customers."""
     query = f"""
-            CREATE TABLE {name} (
+            CREATE TABLE IF NOT EXISTS {name} (
                 customer_id long,
                 customer_fname string,
                 customer_lname string,
@@ -38,7 +38,7 @@ def create_customers_table(spark: sql.SparkSession, name: str) -> None:
 def create_orders_table(spark: sql.SparkSession, name: str) -> None:
     """Create Hive table for orders."""
     query = f"""
-            CREATE TABLE {name} (
+            CREATE TABLE IF NOT EXISTS {name} (
                 order_id long,
                 order_customer_id long,
                 order_date string,
@@ -51,7 +51,7 @@ def create_orders_table(spark: sql.SparkSession, name: str) -> None:
 def create_order_items_table(spark: sql.SparkSession, name: str) -> None:
     """Create Hive table for order_items."""
     query = f"""
-            CREATE TABLE {name} (
+            CREATE TABLE IF NOT EXISTS {name} (
                 order_item_id long,
                 order_item_order_id long,
                 order_item_product_id long,
@@ -79,7 +79,7 @@ def insert_df_into_table(df: sql.DataFrame, name: str) -> None:
 
 
 def merge_df_into_table(spark: sql.SparkSession, df: sql.DataFrame,
-                        name: str, columns: list[str], on: str) -> None:
+                        name: str, columns: list[str], on: str) -> None:    # pragma: no cover
     """
         Merge the dataframe into the target table.
         Currently not supported but keeping it here.
