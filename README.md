@@ -11,7 +11,7 @@ export the RDBMS tables to JSON files.  The tables are normalized so there is a 
 consolidate data.  The retailer has also decided to save the consolidated data in PARQUET 
 files.  These files will then be sent to HQ.
 
-Here is a simple diagram to dscribe the tables and their relationships:
+Here is a simple diagram to describe the tables and their relationships:
 
 <img src="data/images/schema.jpg" width="500" height="200"/>
 
